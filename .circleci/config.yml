@@ -1,0 +1,29 @@
+version: 2.1
+jobs:
+  build:
+    docker:
+      - image: 'circleci/node:lts'
+    working_directory: ~/repo
+    branches:
+      only: main
+    steps:
+      - checkout
+      - restore_cache:
+          name: Restore NPM dependencies
+          keys:
+            - npm-{{ checksum "package.json" }}
+            - npm-
+      - run:
+          name: Install NPM dependencies
+          command: npm install
+      - save_cache:
+          name: Save NPM dependencies
+          paths:
+            - ./node_modules/
+          key: npm-{{ checksum "package.json" }}
+      - run:
+          name: Build
+          command: npm run build
+      - run:
+          name: Release
+          command: npx semantic-release
