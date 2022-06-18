@@ -11,7 +11,10 @@ The `@vocably/hermes` exports 2 methods: `createMessage` and `createExternalMess
 `createMessage` could be used for messaging between content script and service worker when extension ID is not necessary.
 
 ```ts
-const [messageSender, messageSubscriber] = createMessage<PayloadType, ResponseType>('messageIdentifier');
+const [messageSender, messageSubscriber] = createMessage<
+  PayloadType,
+  ResponseType
+>('messageIdentifier');
 ```
 
 `messageSender` function expects `PayloadType` as the only param. `PayloadType` could be `void`. Returns `Promise<ResponseType>`;
@@ -23,7 +26,10 @@ const [messageSender, messageSubscriber] = createMessage<PayloadType, ResponseTy
 `createExternalMessage` could be used for messaging between `externally_connectable` URLs and service worker when extension ID is necessary.
 
 ```ts
-const [messageSender, messageSubscriber] = createExternalMessage<PayloadType, ResponseType>('messageIdentifier');
+const [messageSender, messageSubscriber] = createExternalMessage<
+  PayloadType,
+  ResponseType
+>('messageIdentifier');
 ```
 
 `messageSender` function expects `extensionId: string` as the first parameter and `PayloadType` as the second. `PayloadType` could be `void`. Returns `Promise<ResponseType>`;
@@ -49,7 +55,10 @@ type SaveUserResponse = {
   id: string;
 };
 
-export const [saveUser, onSaveUserRequest] = createMessage<User, SaveUserResponse>('saveUser');
+export const [saveUser, onSaveUserRequest] = createMessage<
+  User,
+  SaveUserResponse
+>('saveUser');
 ```
 
 ```ts
@@ -59,10 +68,10 @@ import { saveUser } from './save-user.ts';
 
 saveUser({
   name: 'Speedy Gonzales',
-  email: 'speedy@disney.com'
+  email: 'speedy@disney.com',
 }).then(({ id }) => {
   console.log(`The saved user ID is ${id}`);
-})
+});
 ```
 
 ```ts
@@ -71,22 +80,22 @@ saveUser({
 import { onSaveUserRequest } from './save-user.ts';
 
 onSaveUserRequest(async (sendResponse, user) => {
-    let id: string;
+  let id: string;
 
-    if (user.id) {
-        // api.updateUser should be implemmented
-        // individually. It's not a part of @vocably/hermes
-        await api.updateUser(user);
-        id = user.id;
-    } else {
-        // api.createUser should be implemmented
-        // individually. It's not a part of @vocably/hermes
-        id = await api.createUser(user);
-    }
-    
-    // The callback function must return sendResponse() with the message return value passed into it.
-    return sendResponse({
-      id
-    });
+  if (user.id) {
+    // api.updateUser should be implemmented
+    // individually. It's not a part of @vocably/hermes
+    await api.updateUser(user);
+    id = user.id;
+  } else {
+    // api.createUser should be implemmented
+    // individually. It's not a part of @vocably/hermes
+    id = await api.createUser(user);
+  }
+
+  // The callback function must return sendResponse() with the message return value passed into it.
+  return sendResponse({
+    id,
+  });
 });
 ```

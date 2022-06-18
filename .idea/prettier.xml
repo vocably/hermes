@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="PrettierConfiguration">
+    <option name="myFilesPattern" value="{**/*,*}.{js,jsx,ts,tsx,md,html,css,scss,json}" />
+  </component>
+</project>
