@@ -4,8 +4,6 @@ jobs:
     docker:
       - image: 'circleci/node:lts'
     working_directory: ~/repo
-    branches:
-      only: main
     steps:
       - checkout
       - restore_cache:
