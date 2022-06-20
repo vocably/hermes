@@ -1,7 +1,13 @@
 {
   "name": "@vocably/hermes",
   "version": "1.0.0",
-  "description": "",
+  "description": "Typesafe Chrome extension messages",
+  "keywords": [
+    "chrome",
+    "extension",
+    "messaging",
+    "typescript"
+  ],
   "main": "dist/commonjs/index.js",
   "module": "dist/esm/index.js",
   "types": "dist/esm/index.d.ts",
