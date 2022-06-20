@@ -1,6 +1,12 @@
 # @vocably/hermes
 
+[![npm package](https://img.shields.io/npm/v/@vocably/hermes.svg)](https://www.npmjs.com/package/@vocably/hermes)
+
 A typesafe and promise-based wrapper for `chrome.runtime.sendMessage`, `chrome.runtime.onMessage.addListener`, and `chrome.runtime.onMessageExternal.addListener`.
+
+## Installation
+
+`npm install --save @vocably/hermes`
 
 ## API
 
