@@ -1,0 +1,14 @@
+node_modules
+src
+tsconfig.json
+tsconfig.commonjs.json
+.gitignore
+.circleci
+.editorconfig
+.releaserc.js
+.husky
+.gitattributes
+.lintstagedrc
+.prettierignore
+.prettierrc
+.npmignore
