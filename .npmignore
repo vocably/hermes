@@ -2,6 +2,7 @@ node_modules
 src
 tsconfig.json
 tsconfig.commonjs.json
+.idea
 .gitignore
 .circleci
 .editorconfig
