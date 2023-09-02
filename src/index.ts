@@ -1,16 +1,26 @@
 import MessageSender = chrome.runtime.MessageSender;
 
+let browserEnv: typeof chrome;
+
+if (typeof chrome !== 'undefined') {
+  browserEnv = chrome;
+  // @ts-ignore
+} else if (typeof browser !== 'undefined') {
+  // @ts-ignore
+  browserEnv = browser;
+}
+
 const makeSend =
   (identifier: string) =>
   <Data, ReturnValue>(data: Data, extensionId?: string) => {
     return new Promise<ReturnValue>((resolve, reject) => {
-      if (!chrome) {
-        reject('chrome environment is not defined');
+      if (!browserEnv) {
+        reject('browserEnv environment is not defined');
         return;
       }
 
-      if (!chrome.runtime) {
-        reject('chrome.runtime is not defined defined');
+      if (!browserEnv.runtime) {
+        reject('browserEnv.runtime is not defined defined');
         return;
       }
 
@@ -25,8 +35,8 @@ const makeSend =
       const sendParams: SendParams = [
         { identifier, data },
         (response: ReturnValue) => {
-          if (chrome.runtime.lastError) {
-            return reject(chrome.runtime.lastError);
+          if (browserEnv.runtime.lastError) {
+            return reject(browserEnv.runtime.lastError);
           }
 
           resolve(response);
@@ -37,7 +47,7 @@ const makeSend =
         sendParams.unshift(extensionId);
       }
 
-      chrome.runtime.sendMessage(...sendParams);
+      browserEnv.runtime.sendMessage(...sendParams);
     });
   };
 
@@ -83,7 +93,9 @@ export const createMessage = <Data, ReturnValue>(
   identifier: string
 ): [(data: Data) => Promise<ReturnValue>, Subscriber<Data, ReturnValue>] => {
   const subscribe = (callback: Callback<Data, ReturnValue>) => {
-    chrome.runtime.onMessage.addListener(makeListener(identifier, callback));
+    browserEnv.runtime.onMessage.addListener(
+      makeListener(identifier, callback)
+    );
   };
 
   return [makeSend(identifier), subscribe];
@@ -98,7 +110,7 @@ export const createExternalMessage = <Data, ReturnValue>(
   const send = makeSend(identifier);
 
   const subscribe = (callback: Callback<Data, ReturnValue>) => {
-    chrome.runtime.onMessageExternal.addListener(
+    browserEnv.runtime.onMessageExternal.addListener(
       makeListener(identifier, callback)
     );
   };
